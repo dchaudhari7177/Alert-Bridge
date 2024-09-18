@@ -1,6 +1,3 @@
-ADMIN
-
-
 
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
