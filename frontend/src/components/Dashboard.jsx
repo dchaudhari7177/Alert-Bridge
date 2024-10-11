@@ -6,7 +6,7 @@ import Chatbot from '../components/Chatbot';
 const socket = io('http://localhost:5000');
 
 const Dashboard = () => {
-  const { userLocation } = useContext(AuthContext);
+  const { userLocation, user } = useContext(AuthContext); // Access the user from AuthContext
   const [weatherData, setWeatherData] = useState(null);
   const [precautions, setPrecautions] = useState('');
   const [trainedModel, setTrainedModel] = useState(null);  
@@ -220,45 +220,27 @@ const Dashboard = () => {
   return (
     <div style={dashboardStyles.container}>
       <div style={dashboardStyles.leftSide}>
+        <h2>Hello {user ? user.name : 'Guest'}</h2> {/* Displaying the logged-in user's name */}
         <h2>Weather Information</h2>
         {weatherData && (
           <div style={dashboardStyles.weatherInfo}>
             <p><strong>Temperature:</strong> {weatherData.main.temp} °C</p>
             <p><strong>Humidity:</strong> {weatherData.main.humidity}%</p>
             <p><strong>Wind Speed:</strong> {weatherData.wind.speed} m/s</p>
+            <h3>Precautions</h3>
+            <p>{precautions}</p>
           </div>
         )}
-        <h3>Safety Precautions</h3>
-        {precautions ? <p>{precautions}</p> : <p>Loading...</p>}
-        {forecastData && (
-          <div>
-            <h3>Weather Forecast</h3>
-            <table style={dashboardStyles.forecastTable}>
-              <thead>
-                <tr>
-                  <th style={dashboardStyles.tableHeader}>Date</th>
-                  <th style={dashboardStyles.tableHeader}>Temperature (°C)</th>
-                  <th style={dashboardStyles.tableHeader}>Humidity (%)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {forecastData.list.slice(0, 5).map((forecast, index) => (
-                  <tr key={index} style={dashboardStyles.tableRow}>
-                    <td style={dashboardStyles.tableData}>{new Date(forecast.dt * 1000).toLocaleDateString()}</td>
-                    <td style={dashboardStyles.tableData}>{forecast.main.temp}</td>
-                    <td style={dashboardStyles.tableData}>{forecast.main.humidity}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {predictedEarthquakeRisk !== null && (
+          <div style={dashboardStyles.weatherInfo}>
+            <h3>Earthquake Risk</h3>
+            <p>{predictedEarthquakeRisk > 2 ? 'High Earthquake Risk in the Area.' : 'No Immediate Earthquake Risk Detected.'}</p>
           </div>
         )}
-      </div>
-      <div style={dashboardStyles.rightSide}>
-        <h2>Unsafe Report</h2>
+        <h3>Notify Admin of Unsafe Status</h3>
         <input
           type="text"
-          placeholder="Add any additional unsafe details"
+          placeholder="Enter unsafe reason or description"
           value={unsafeText}
           onChange={(e) => setUnsafeText(e.target.value)}
           style={dashboardStyles.input}
@@ -266,13 +248,32 @@ const Dashboard = () => {
         <button onClick={handleUnsafeClick} style={dashboardStyles.button}>
           I am unsafe
         </button>
-        {predictedEarthquakeRisk !== null && (
+      </div>
+      <div style={dashboardStyles.rightSide}>
+        {forecastData && (
           <div>
-            <h3>Predicted Earthquake Risk</h3>
-            <p>{predictedEarthquakeRisk > 0 ? `High Risk (Level ${predictedEarthquakeRisk})` : 'Low Risk'}</p>
+            <h2>Weather Forecast</h2>
+            <table style={dashboardStyles.forecastTable}>
+              <thead>
+                <tr style={dashboardStyles.tableRow}>
+                  <th style={dashboardStyles.tableHeader}>Date/Time</th>
+                  <th style={dashboardStyles.tableHeader}>Temperature (°C)</th>
+                  <th style={dashboardStyles.tableHeader}>Weather</th>
+                </tr>
+              </thead>
+              <tbody>
+                {forecastData.list.slice(0, 5).map((forecast, index) => (
+                  <tr key={index} style={dashboardStyles.tableRow}>
+                    <td style={dashboardStyles.tableData}>{forecast.dt_txt}</td>
+                    <td style={dashboardStyles.tableData}>{forecast.main.temp}</td>
+                    <td style={dashboardStyles.tableData}>{forecast.weather[0].description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
-        <Chatbot />
+        <Chatbot /> 
       </div>
     </div>
   );

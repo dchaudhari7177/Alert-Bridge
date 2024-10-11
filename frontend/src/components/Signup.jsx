@@ -3,6 +3,7 @@ import AuthContext from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const [name, setName] = useState('');  // Add state for name
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signup } = useContext(AuthContext); 
@@ -11,10 +12,11 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signup(email, password); 
+      await signup(name, email, password); // Pass name to signup function
       navigate('/');
     } catch (error) {
-      console.error('Signup Error:', error.message); }
+      console.error('Signup Error:', error.message); 
+    }
   };
 
   return (
@@ -22,6 +24,14 @@ const Signup = () => {
       <div style={styles.formContainer}>
         <h2 style={styles.heading}>Signup</h2>
         <form onSubmit={handleSubmit} style={styles.form}>
+          <input 
+            type="text" 
+            placeholder="Name" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+            required 
+            style={styles.input}
+          />
           <input 
             type="email" 
             placeholder="Email" 
