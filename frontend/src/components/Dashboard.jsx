@@ -6,7 +6,7 @@ import Chatbot from '../components/Chatbot';
 const socket = io('http://localhost:5000');
 
 const Dashboard = () => {
-  const { userLocation, user } = useContext(AuthContext); // Access the user from AuthContext
+  const { userLocation } = useContext(AuthContext);
   const [weatherData, setWeatherData] = useState(null);
   const [precautions, setPrecautions] = useState('');
   const [trainedModel, setTrainedModel] = useState(null);  
@@ -158,26 +158,32 @@ const Dashboard = () => {
   const dashboardStyles = {
     container: {
       display: 'flex',
+      flexDirection: 'column', // Stack items vertically on smaller screens
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
       minHeight: '100vh',
       fontFamily: 'Arial, sans-serif',
       background: 'linear-gradient(135deg, #f2f2f2, #e0e0e0)',
     },
     leftSide: {
-      width: '50%',
+      width: '100%',
+      maxWidth: '600px',
       backgroundColor: '#ffffff',
       padding: '20px',
       boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
       borderRadius: '10px',
-      margin: '20px',
+      margin: '10px',
       animation: 'fadeIn 1s ease-in-out',
     },
     rightSide: {
-      width: '50%',
+      width: '100%',
+      maxWidth: '600px',
       backgroundColor: '#ffffff',
       padding: '20px',
       boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
       borderRadius: '10px',
-      margin: '20px',
+      margin: '10px',
       animation: 'fadeIn 1s ease-in-out',
     },
     weatherInfo: {
@@ -215,65 +221,46 @@ const Dashboard = () => {
       marginBottom: '20px',
       width: '100%',
     },
+    '@media (min-width: 768px)': {
+      container: {
+        flexDirection: 'row', // Align items horizontally on larger screens
+      },
+      leftSide: {
+        marginRight: '10px', // Add space between columns
+      },
+    },
   };
 
   return (
     <div style={dashboardStyles.container}>
       <div style={dashboardStyles.leftSide}>
-        <h2>Hello {user ? user.name : 'Guest'}</h2> {/* Displaying the logged-in user's name */}
         <h2>Weather Information</h2>
         {weatherData && (
           <div style={dashboardStyles.weatherInfo}>
-            <p><strong>Temperature:</strong> {weatherData.main.temp} °C</p>
+            <p><strong>Temperature:</strong> {weatherData.main.temp}°C</p>
             <p><strong>Humidity:</strong> {weatherData.main.humidity}%</p>
             <p><strong>Wind Speed:</strong> {weatherData.wind.speed} m/s</p>
-            <h3>Precautions</h3>
-            <p>{precautions}</p>
           </div>
         )}
-        {predictedEarthquakeRisk !== null && (
-          <div style={dashboardStyles.weatherInfo}>
-            <h3>Earthquake Risk</h3>
-            <p>{predictedEarthquakeRisk > 2 ? 'High Earthquake Risk in the Area.' : 'No Immediate Earthquake Risk Detected.'}</p>
-          </div>
-        )}
-        <h3>Notify Admin of Unsafe Status</h3>
-        <input
-          type="text"
-          placeholder="Enter unsafe reason or description"
-          value={unsafeText}
-          onChange={(e) => setUnsafeText(e.target.value)}
-          style={dashboardStyles.input}
-        />
-        <button onClick={handleUnsafeClick} style={dashboardStyles.button}>
-          I am unsafe
-        </button>
+        <h2>Earthquake Risk</h2>
+        <p>{predictedEarthquakeRisk ? `Risk Level: ${predictedEarthquakeRisk}` : 'Evaluating risk...'}</p>
+        <h2>Safety Precautions</h2>
+        <p>{precautions}</p>
       </div>
       <div style={dashboardStyles.rightSide}>
-        {forecastData && (
-          <div>
-            <h2>Weather Forecast</h2>
-            <table style={dashboardStyles.forecastTable}>
-              <thead>
-                <tr style={dashboardStyles.tableRow}>
-                  <th style={dashboardStyles.tableHeader}>Date/Time</th>
-                  <th style={dashboardStyles.tableHeader}>Temperature (°C)</th>
-                  <th style={dashboardStyles.tableHeader}>Weather</th>
-                </tr>
-              </thead>
-              <tbody>
-                {forecastData.list.slice(0, 5).map((forecast, index) => (
-                  <tr key={index} style={dashboardStyles.tableRow}>
-                    <td style={dashboardStyles.tableData}>{forecast.dt_txt}</td>
-                    <td style={dashboardStyles.tableData}>{forecast.main.temp}</td>
-                    <td style={dashboardStyles.tableData}>{forecast.weather[0].description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <Chatbot /> 
+        <h2>Chatbot</h2>
+        <Chatbot />
+        <h2>Unsafe Status</h2>
+        <input
+          type="text"
+          value={unsafeText}
+          onChange={(e) => setUnsafeText(e.target.value)}
+          placeholder="Type your concern..."
+          style={dashboardStyles.input}
+        />
+        <button style={dashboardStyles.button} onClick={handleUnsafeClick}>
+          I am unsafe
+        </button>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
@@ -6,19 +5,20 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
+import './AdminDashboard.css'; // External CSS for better styling
 
 const socket = io('http://localhost:5000');
 
 const AdminDashboard = () => {
   const [unsafeReports, setUnsafeReports] = useState([]);
-  const [map, setMap] = useState(null); 
-  const [currentLocation, setCurrentLocation] = useState([51.505, -0.09]); 
+  const [map, setMap] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState([51.505, -0.09]);
   const [userMarkers, setUserMarkers] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  const apiKey = '3e3e546e38846f06bc1e74ea591cc753'; 
+  const apiKey = '3e3e546e38846f06bc1e74ea591cc753';
 
   useEffect(() => {
     socket.on('reportUnsafe', (data) => {
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         setCurrentLocation([latitude, longitude]);
-        mapInstance.setView([latitude, longitude], 13); 
+        mapInstance.setView([latitude, longitude], 13);
         L.marker([latitude, longitude]).addTo(mapInstance).bindPopup('Admin Location').openPopup();
       });
     }
@@ -88,34 +88,36 @@ const AdminDashboard = () => {
 
   const handleServiceClick = (serviceType) => {
     if (unsafeReports.length === 0) {
-      alert("No unsafe reports available.");
+      alert('No unsafe reports available.');
       return;
     }
 
-    const latestReport = unsafeReports[unsafeReports.length - 1]; 
+    const latestReport = unsafeReports[unsafeReports.length - 1];
     const serviceData = {
       latitude: latestReport.latitude,
       longitude: latestReport.longitude,
       service: serviceType,
     };
 
-    socket.emit('sendService', serviceData); 
+    socket.emit('sendService', serviceData);
     alert(`${serviceType} service sent to (${latestReport.latitude}, ${latestReport.longitude})`);
   };
 
   const handleLogout = () => {
     socket.emit('logout');
-    navigate('/'); 
+    navigate('/');
   };
 
   return (
-    <div style={dashboardContainerStyle}>
-      <h1>Admin Dashboard</h1>
-      <p>Welcome, Admin! Here you can manage users, view analytics, and more.</p>
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, Admin! Manage users, view analytics, and monitor reports here.</p>
+      </div>
 
       {weatherData && (
-        <div style={weatherInfoStyle}>
-          <h3>Users Weather Info:</h3>
+        <div className="weather-info">
+          <h3>Users' Weather Info:</h3>
           <p>Temperature: {weatherData.temp} °C</p>
           <p>Humidity: {weatherData.humidity} %</p>
           <p>Description: {weatherData.description}</p>
@@ -124,23 +126,25 @@ const AdminDashboard = () => {
 
       <h2>Unsafe Location Reports</h2>
       {unsafeReports.length > 0 ? (
-        <ul>
+        <ul className="report-list">
           {unsafeReports.map((report, index) => (
-            <li key={index}>
-              User at Latitude: {report.latitude}, Longitude: {report.longitude}
-              <br />
-              Message: {report.text || 'No message provided'}
+            <li key={index} className="report-item">
+              <p>
+                User at Latitude: {report.latitude}, Longitude: {report.longitude}
+              </p>
+              <p>Message: {report.text || 'No message provided'}</p>
               <button
                 onClick={() => {
                   if (map) {
-                    map.setView([report.latitude, report.longitude], 13); 
-                    L.marker([report.latitude, report.longitude]).addTo(map)
+                    map.setView([report.latitude, report.longitude], 13);
+                    L.marker([report.latitude, report.longitude])
+                      .addTo(map)
                       .bindPopup(`Unsafe location: Latitude: ${report.latitude}, Longitude: ${report.longitude}
                         <br>Message: ${report.text || 'No message provided'}`)
                       .openPopup();
                   }
                 }}
-                style={showOnMapButtonStyle}
+                className="show-on-map-button"
               >
                 Show Location
               </button>
@@ -151,71 +155,15 @@ const AdminDashboard = () => {
         <p>No unsafe reports yet.</p>
       )}
 
-      {/* Three buttons for service options */}
-      
+      <div id="map" className="map-container"></div> {/* Map container */}
 
-      <div id="map" style={mapStyle}></div> {/* Map container */}
-
-      <button onClick={handleLogout} style={logoutButtonStyle}>
+      <button onClick={handleLogout} className="logout-button">
         Logout
       </button>
     </div>
   );
 };
 
-const dashboardContainerStyle = {
-  padding: '20px',
-  position: 'relative',
-};
 
-const logoutButtonStyle = {
-  padding: '10px',
-  backgroundColor: '#DC3545',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-};
-
-const showOnMapButtonStyle = {
-  marginLeft: '10px',
-  padding: '5px 10px',
-  backgroundColor: '#007BFF',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-};
-
-const mapStyle = {
-  height: '500px',
-  marginTop: '20px',
-};
-
-const serviceButtonContainerStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginBottom: '20px',
-};
-
-const serviceButtonStyle = {
-  padding: '10px 20px',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  flex: 1,
-  margin: '0 10px',
-};
-
-const weatherInfoStyle = {
-  position: 'absolute',
-  top: '10px',
-  right: '10px',
-  padding: '10px',
-  backgroundColor: '#f8f9fa',
-  border: '1px solid #ccc',
-  borderRadius: '5px',
-};
 
 export default AdminDashboard;
