@@ -31,6 +31,18 @@ const Home = () => {
     }
   };
 
+  const handleImportantContact = () => {
+    navigate('/important-contact');
+  };
+
+  const handleNewsRedirect = () => {
+    navigate('/news'); // Navigate to the News page
+  };
+
+  const handleQuotesRedirect = () => {
+    navigate('/quotes'); // Navigate to the Quotes page
+  };
+
   return (
     <div style={containerStyle}>
       <header style={headerStyle}>
@@ -41,6 +53,8 @@ const Home = () => {
             <button onClick={handleDashboard} style={dashboardButtonStyle}>
               {userRole === 'admin' ? 'Admin Dashboard' : 'Dashboard'}
             </button>
+            <button onClick={handleImportantContact} style={importantContactButtonStyle}>Important Contact</button>
+            <button onClick={handleQuotesRedirect} style={quotesButtonStyle}>Quotes</button> {/* New Quotes button */}
           </div>
         )}
       </header>
@@ -65,7 +79,8 @@ const Home = () => {
         <section style={authContainerStyle}>
           {isLogin ? (
             <div>
-              <p style={welcomeTextStyle}>Welcome back, {user?.name || 'User'}! Explore your dashboard!</p> {/* Added check for user */}
+              <p style={welcomeTextStyle}>Welcome back, {user?.name || 'User'}! Explore your dashboard!</p>
+              <button onClick={handleNewsRedirect} style={newsButtonStyle}>News of Disasters</button> {/* New button */}
             </div>
           ) : (
             <div style={authButtonContainerStyle}>
@@ -87,8 +102,6 @@ const Home = () => {
 };
 
 // Styles...
-
-
 
 const containerStyle = {
   fontFamily: `'Poppins', sans-serif`,
@@ -139,6 +152,45 @@ const logoutButtonStyle = {
 
 const dashboardButtonStyle = {
   backgroundColor: '#5A67D8',
+  color: '#FFFFFF',
+  padding: '10px 20px',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  border: 'none',
+  fontSize: '1rem',
+  transition: 'background-color 0.3s',
+};
+
+const quotesButtonStyle = {
+  backgroundColor: '#F39C12', // A distinct color for the Quotes button
+  color: '#FFFFFF',
+  padding: '10px 20px',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  border: 'none',
+  marginTop: '10px',
+  fontSize: '1rem',
+  transition: 'background-color 0.3s',
+};
+
+const newsButtonStyle = {
+  backgroundColor: '#F39C12', // A distinct color for the news button
+  color: '#FFFFFF',
+  padding: '10px 20px',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  border: 'none',
+  marginTop: '10px',
+  fontSize: '1rem',
+  transition: 'background-color 0.3s',
+};
+
+
+// The remaining styles...
+
+
+const importantContactButtonStyle = {  // New button style
+  backgroundColor: '#28A745',
   color: '#FFFFFF',
   padding: '10px 20px',
   borderRadius: '5px',
