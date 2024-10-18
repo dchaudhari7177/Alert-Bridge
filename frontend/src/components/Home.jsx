@@ -39,10 +39,6 @@ const Home = () => {
     navigate('/news'); // Navigate to the News page
   };
 
-  const handleQuotesRedirect = () => {
-    navigate('/quotes'); // Navigate to the Quotes page
-  };
-
   return (
     <div style={containerStyle}>
       <header style={headerStyle}>
@@ -54,7 +50,7 @@ const Home = () => {
               {userRole === 'admin' ? 'Admin Dashboard' : 'Dashboard'}
             </button>
             <button onClick={handleImportantContact} style={importantContactButtonStyle}>Important Contact</button>
-            <button onClick={handleQuotesRedirect} style={quotesButtonStyle}>Quotes</button> {/* New Quotes button */}
+            <button onClick={handleNewsRedirect} style={newsButtonStyle}>News of Disasters</button> {/* News button added */}
           </div>
         )}
       </header>
@@ -80,7 +76,6 @@ const Home = () => {
           {isLogin ? (
             <div>
               <p style={welcomeTextStyle}>Welcome back, {user?.name || 'User'}! Explore your dashboard!</p>
-              <button onClick={handleNewsRedirect} style={newsButtonStyle}>News of Disasters</button> {/* New button */}
             </div>
           ) : (
             <div style={authButtonContainerStyle}>
@@ -161,18 +156,6 @@ const dashboardButtonStyle = {
   transition: 'background-color 0.3s',
 };
 
-const quotesButtonStyle = {
-  backgroundColor: '#F39C12', // A distinct color for the Quotes button
-  color: '#FFFFFF',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  marginTop: '10px',
-  fontSize: '1rem',
-  transition: 'background-color 0.3s',
-};
-
 const newsButtonStyle = {
   backgroundColor: '#F39C12', // A distinct color for the news button
   color: '#FFFFFF',
@@ -185,11 +168,7 @@ const newsButtonStyle = {
   transition: 'background-color 0.3s',
 };
 
-
-// The remaining styles...
-
-
-const importantContactButtonStyle = {  // New button style
+const importantContactButtonStyle = {
   backgroundColor: '#28A745',
   color: '#FFFFFF',
   padding: '10px 20px',
