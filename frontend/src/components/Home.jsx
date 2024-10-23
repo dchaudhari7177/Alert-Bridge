@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 const Home = () => {
-  const { isLogin, logout, userRole, user } = useContext(AuthContext); // Ensure `user` is included in context
+  const { isLogin, logout, userRole, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -36,261 +36,64 @@ const Home = () => {
   };
 
   const handleNewsRedirect = () => {
-    navigate('/news'); // Navigate to the News page
+    navigate('/news');
   };
 
   return (
-    <div style={containerStyle}>
-      <header style={headerStyle}>
-        <h1 style={titleStyle}>Welcome to Our App</h1>
-        {isLogin && (
-          <div style={buttonContainerStyle}>
-            <button onClick={handleLogout} style={logoutButtonStyle}>Logout</button>
-            <button onClick={handleDashboard} style={dashboardButtonStyle}>
-              {userRole === 'admin' ? 'Admin Dashboard' : 'Dashboard'}
-            </button>
-            <button onClick={handleImportantContact} style={importantContactButtonStyle}>Important Contact</button>
-            <button onClick={handleNewsRedirect} style={newsButtonStyle}>News of Disasters</button> {/* News button added */}
-          </div>
-        )}
+    <div className="flex flex-col min-h-screen bg-[#F0F8FF]">
+      <header className="flex justify-between items-center p-4 bg-[#0077B6] text-white shadow-md fixed w-full z-10">
+        <h1 className="text-3xl font-bold transition-transform duration-300 transform hover:scale-105">Welcome to Our App</h1>
+        <div className="flex gap-4">
+          {isLogin ? (
+            <>
+              <button onClick={handleLogout} className="bg-[#FF6F61] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">Logout</button>
+              <button onClick={handleDashboard} className="bg-[#5A67D8] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">
+                {userRole === 'admin' ? 'Admin Dashboard' : 'Dashboard'}
+              </button>
+              <button onClick={handleImportantContact} className="bg-[#28A745] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">Important Contact</button>
+              <button onClick={handleNewsRedirect} className="bg-[#F39C12] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">News</button>
+            </>
+          ) : (
+            <div className="flex gap-2">
+              <button onClick={handleLogin} className="bg-[#FF6F61] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">Login</button>
+              <button onClick={handleSignup} className="bg-[#17A2B8] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">Signup</button>
+              <button onClick={handleAdminLogin} className="bg-[#FFC107] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">Admin Login</button>
+            </div>
+          )}
+        </div>
       </header>
-      <main style={mainStyle}>
-        <section style={infoSectionStyle}>
-          <h2 style={infoTitleStyle}>About Our Website</h2>
-          <p style={infoTextStyle}>
-            Our platform is designed to provide users with a smooth and interactive experience.
-            We offer real-time data, personalized dashboards, and a wide range of features
-            to help you stay informed and connected. From monitoring weather conditions to accessing
+
+      <main className="flex-grow flex flex-col items-center justify-center p-4 pt-20">
+        <section className="bg-white shadow-lg rounded-lg p-6 w-full md:w-3/4 lg:w-2/3 mb-4 animate-fadeIn">
+          <h2 className="text-2xl text-[#0077B6] font-bold mb-4">About Our Website</h2>
+          <p className="text-lg text-gray-700 mb-4">
+            Our platform is designed to provide users with a smooth and interactive experience. 
+            We offer real-time data, personalized dashboards, and a wide range of features 
+            to help you stay informed and connected. From monitoring weather conditions to accessing 
             the latest updates, our app is your one-stop solution for all your needs.
-            <br /><br />
-            Our key features include:
           </p>
-          <ul style={featureListStyle}>
+          <ul className="list-disc list-inside text-lg text-[#0077B6] mb-4">
             <li>Real-time weather updates and forecasts</li>
             <li>Personalized user and admin dashboards</li>
             <li>Advanced analytics and reporting</li>
             <li>Responsive design for seamless access across devices</li>
           </ul>
         </section>
-        <section style={authContainerStyle}>
+
+        <section className="bg-[#0077B6] text-white rounded-lg p-6 w-full md:w-3/4 lg:w-2/3 animate-fadeInRight">
           {isLogin ? (
-            <div>
-              <p style={welcomeTextStyle}>Welcome back, {user?.name || 'User'}! Explore your dashboard!</p>
-            </div>
+            <p className="text-xl text-center">Welcome back, {user?.name || 'User'}! Explore your dashboard!</p>
           ) : (
-            <div style={authButtonContainerStyle}>
-              <p style={loginPromptStyle}>Please log in or sign up to get started.</p>
-              <button onClick={handleLogin} style={loginButtonStyle}>Login</button>
-              <button onClick={handleSignup} style={signupButtonStyle}>Signup</button>
-              <button onClick={handleAdminLogin} style={adminLoginButtonStyle}>Admin Login</button>
-            </div>
+            <p className="text-lg text-center mb-4">Please log in or sign up to get started.</p>
           )}
         </section>
       </main>
-      <footer style={footerStyle}>
-        <p style={footerTextStyle}>
-          &copy; {new Date().getFullYear()} Our App. All rights reserved.
-        </p>
+
+      <footer className="bg-[#0077B6] text-white p-4 text-center">
+        <p>&copy; {new Date().getFullYear()} DVT Group. All rights reserved.</p>
       </footer>
     </div>
   );
-};
-
-// Styles...
-
-const containerStyle = {
-  fontFamily: `'Poppins', sans-serif`,
-  color: '#333',
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  margin: 0,
-  padding: 0,
-  backgroundColor: '#F0F8FF',
-  width: '100%',
-};
-
-const headerStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '20px',
-  backgroundColor: '#0077B6',
-  color: '#FFFFFF',
-  position: 'fixed',
-  width: '100%',
-  top: 0,
-  left: 0,
-  zIndex: 1000,
-};
-
-const titleStyle = {
-  fontSize: '2rem',
-  fontWeight: 'bold',
-};
-
-const buttonContainerStyle = {
-  display: 'flex',
-  gap: '15px',
-};
-
-const logoutButtonStyle = {
-  backgroundColor: '#FF6F61',
-  color: '#FFFFFF',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  fontSize: '1rem',
-  transition: 'background-color 0.3s',
-};
-
-const dashboardButtonStyle = {
-  backgroundColor: '#5A67D8',
-  color: '#FFFFFF',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  fontSize: '1rem',
-  transition: 'background-color 0.3s',
-};
-
-const newsButtonStyle = {
-  backgroundColor: '#F39C12', // A distinct color for the news button
-  color: '#FFFFFF',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  marginTop: '10px',
-  fontSize: '1rem',
-  transition: 'background-color 0.3s',
-};
-
-const importantContactButtonStyle = {
-  backgroundColor: '#28A745',
-  color: '#FFFFFF',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  fontSize: '1rem',
-  transition: 'background-color 0.3s',
-};
-
-const mainStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  padding: '80px 20px 20px 20px',
-  backgroundColor: '#F0F4FF',
-  textAlign: 'center',
-};
-
-const infoSectionStyle = {
-  width: '60%',
-  padding: '20px',
-  backgroundColor: '#FFFFFF',
-  borderRadius: '10px',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  textAlign: 'left',
-  animation: 'fadeIn 1s ease-in-out',
-};
-
-const infoTitleStyle = {
-  fontSize: '2rem',
-  color: '#0077B6',
-  fontWeight: 'bold',
-};
-
-const infoTextStyle = {
-  fontSize: '1.2rem',
-  lineHeight: '1.8',
-  color: '#333333',
-  marginTop: '15px',
-};
-
-const featureListStyle = {
-  marginTop: '15px',
-  padding: '0',
-  listStyleType: 'none',
-  fontSize: '1rem',
-  lineHeight: '1.5',
-  color: '#0077B6',
-};
-
-const authContainerStyle = {
-  width: '35%',
-  backgroundColor: '#0077B6',
-  color: '#FFFFFF',
-  padding: '20px',
-  borderRadius: '10px',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  animation: 'fadeInRight 1s ease-in-out',
-};
-
-const authButtonContainerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-};
-
-const welcomeTextStyle = {
-  fontSize: '1.5rem',
-  marginBottom: '20px',
-};
-
-const loginPromptStyle = {
-  fontSize: '1.2rem',
-  marginBottom: '20px',
-};
-
-const loginButtonStyle = {
-  backgroundColor: '#FF6F61',
-  color: '#FFFFFF',
-  padding: '12px 25px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  marginBottom: '10px',
-  transition: 'transform 0.3s',
-};
-
-const signupButtonStyle = {
-  backgroundColor: '#17A2B8',
-  color: '#FFFFFF',
-  padding: '12px 25px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  marginBottom: '10px',
-  transition: 'transform 0.3s',
-};
-
-const adminLoginButtonStyle = {
-  backgroundColor: '#FFC107',
-  color: '#FFFFFF',
-  padding: '12px 25px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  border: 'none',
-  transition: 'transform 0.3s',
-};
-
-const footerStyle = {
-  backgroundColor: '#0077B6',
-  color: '#FFFFFF',
-  padding: '10px',
-  textAlign: 'center',
-  position: 'fixed',
-  bottom: 0,
-  width: '100%',
-};
-
-const footerTextStyle = {
-  fontSize: '0.9rem',
-  margin: 0,
 };
 
 export default Home;

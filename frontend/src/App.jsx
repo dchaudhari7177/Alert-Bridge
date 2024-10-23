@@ -6,10 +6,11 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
-import ImportantContacts from './components/ImportantContact'; // Import the new page
+import ImportantContacts from './components/ImportantContact';
 import { AuthProvider } from './context/AuthContext';
 import News from './components/News';
 import Quotes from './components/Quotes';
+
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/quotes" element={<Quotes />} />
           <Route path="/news" element={<News />} />
-          <Route path="/important-contact" element={<ImportantContacts />} /> {/* New route */}
+          <Route path="/important-contact" element={<ImportantContacts />} /> 
         </Routes>
       </Router>
     </AuthProvider>
