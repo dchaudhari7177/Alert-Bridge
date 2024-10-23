@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
-import './AdminDashboard.css'; // External CSS for better styling
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css'; 
 
 const socket = io('http://localhost:5000');
 
@@ -13,27 +12,21 @@ const AdminDashboard = () => {
   const [unsafeReports, setUnsafeReports] = useState([]);
   const [map, setMap] = useState(null);
   const [currentLocation, setCurrentLocation] = useState([51.505, -0.09]);
-  const [userMarkers, setUserMarkers] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
-
   const navigate = useNavigate();
-
   const apiKey = '3e3e546e38846f06bc1e74ea591cc753';
 
   useEffect(() => {
     socket.on('reportUnsafe', (data) => {
       console.log('Unsafe report received:', data);
       setUnsafeReports((prevReports) => [...prevReports, data]);
-
       fetchWeatherData(data.latitude, data.longitude);
 
       if (map) {
         const newMarker = L.marker([data.latitude, data.longitude]).addTo(map);
-        newMarker.bindPopup(`
-          Unsafe location: Latitude: ${data.latitude}, Longitude: ${data.longitude}
-          <br>Message: ${data.text || 'No message provided'}
-        `).openPopup();
-        setUserMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+        newMarker.bindPopup(`Unsafe location: Latitude: ${data.latitude}, Longitude: ${data.longitude}
+          <br>Message: ${data.text || 'No message provided'}`)
+          .openPopup();
       }
     });
 
@@ -109,27 +102,27 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <p>Welcome, Admin! Manage users, view analytics, and monitor reports here.</p>
+    <div className="flex flex-col h-screen p-6 bg-gradient-to-br from-blue-100 to-green-100">
+      <div className="mb-4 text-center">
+        <h1 className="text-4xl font-bold text-blue-700 mb-2">Admin Dashboard</h1>
+        <p className="text-lg text-gray-600">Manage users, view analytics, and monitor reports here.</p>
       </div>
 
       {weatherData && (
-        <div className="weather-info">
-          <h3>Users' Weather Info:</h3>
-          <p>Temperature: {weatherData.temp} °C</p>
-          <p>Humidity: {weatherData.humidity} %</p>
-          <p>Description: {weatherData.description}</p>
+        <div className="mb-6 p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105">
+          <h3 className="text-2xl font-semibold text-blue-600">Users' Weather Info:</h3>
+          <p className="text-lg">Temperature: <span className="font-bold">{weatherData.temp} °C</span></p>
+          <p className="text-lg">Humidity: <span className="font-bold">{weatherData.humidity} %</span></p>
+          <p className="text-lg">Description: <span className="font-bold">{weatherData.description}</span></p>
         </div>
       )}
 
-      <h2>Unsafe Location Reports</h2>
+      <h2 className="text-3xl font-semibold text-gray-800 mb-4">Unsafe Location Reports</h2>
       {unsafeReports.length > 0 ? (
-        <ul className="report-list">
+        <ul className="mb-6 space-y-4">
           {unsafeReports.map((report, index) => (
-            <li key={index} className="report-item">
-              <p>
+            <li key={index} className="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
+              <p className="font-semibold">
                 User at Latitude: {report.latitude}, Longitude: {report.longitude}
               </p>
               <p>Message: {report.text || 'No message provided'}</p>
@@ -144,7 +137,7 @@ const AdminDashboard = () => {
                       .openPopup();
                   }
                 }}
-                className="show-on-map-button"
+                className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
                 Show Location
               </button>
@@ -152,18 +145,19 @@ const AdminDashboard = () => {
           ))}
         </ul>
       ) : (
-        <p>No unsafe reports yet.</p>
+        <p className="text-gray-600">No unsafe reports yet.</p>
       )}
 
-      <div id="map" className="map-container"></div> {/* Map container */}
+      <div id="map" className="h-96 mb-4 rounded-lg shadow-md"></div>
 
-      <button onClick={handleLogout} className="logout-button">
+      <button
+        onClick={handleLogout}
+        className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors"
+      >
         Logout
       </button>
     </div>
   );
 };
-
-
 
 export default AdminDashboard;
