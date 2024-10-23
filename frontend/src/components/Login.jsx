@@ -11,10 +11,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(email, password); 
-      navigate('/'); 
+      const userData = await login(email, password); 
+      console.log('User data:', userData); 
+      
+      if (userData) {
+        navigate('/'); 
+      } else {
+        alert('Your account is not verified. Please check your email for the verification link.'); 
+      }
     } catch (error) {
-      console.error('Login Error:', error.message); }
+      alert(error.message); 
+      console.error('Login Error:', error.message);
+    }
   };
 
   return (

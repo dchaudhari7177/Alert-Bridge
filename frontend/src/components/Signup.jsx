@@ -3,7 +3,7 @@ import AuthContext from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  const [name, setName] = useState('');  // Add state for name
+  const [name, setName] = useState('');  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signup } = useContext(AuthContext); 
@@ -12,10 +12,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signup(name, email, password); // Pass name to signup function
-      navigate('/');
+      await signup(name, email, password);
+      alert('Signup successful! Please check your email to verify your account.'); 
+      navigate('/'); 
     } catch (error) {
-      console.error('Signup Error:', error.message); 
+      console.error('Signup Error:', error.message);
+      alert(error.message); 
     }
   };
 
