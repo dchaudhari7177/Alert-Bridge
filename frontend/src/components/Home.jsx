@@ -90,7 +90,7 @@ const Home = () => {
       </main>
 
       <footer className="bg-[#0077B6] text-white p-4 text-center">
-        <p>&copy; {new Date().getFullYear()} DVT Group. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} VORTEX KNIGHTS. All rights reserved.</p>
       </footer>
     </div>
   );

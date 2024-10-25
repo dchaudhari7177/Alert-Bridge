@@ -6,7 +6,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
-  sendEmailVerification 
+  sendEmailVerification,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import firebaseApp from '../firebaseConfig';
 
@@ -58,9 +59,9 @@ export const AuthProvider = ({ children }) => {
       await updateProfile(user, { displayName: name });
       setUserName(name);
 
-      await sendVerificationEmail(user); 
+      await sendVerificationEmail(user);
 
-      await signOut(auth);
+      await signOut(auth); 
     } catch (error) {
       console.error('Signup Error:', error.message);
       throw error;
@@ -69,10 +70,20 @@ export const AuthProvider = ({ children }) => {
 
   const sendVerificationEmail = async (user) => {
     try {
-      await sendEmailVerification(user); 
+      await sendEmailVerification(user);
       console.log('Verification email sent to:', user.email);
     } catch (error) {
       console.error('Error sending verification email:', error.message);
+    }
+  };
+
+  const resetPassword = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log('Password reset email sent to:', email);
+    } catch (error) {
+      console.error('Error sending password reset email:', error.message);
+      throw error;
     }
   };
 
@@ -115,7 +126,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, userName, signup, login, logout, userLocation }}>
+    <AuthContext.Provider value={{ isLogin, userName, signup, login, logout, resetPassword, userLocation }}>
       {children}
     </AuthContext.Provider>
   );
