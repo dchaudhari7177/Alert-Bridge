@@ -68,12 +68,14 @@ const Login = () => {
             Login
           </button>
           <button
-            type="button"
-            onClick={handleResetPassword}
-            className="text-indigo-600 font-semibold py-3 mt-4 rounded-lg transition-transform duration-300 transform hover:text-indigo-800"
-          >
-            Forgot Password?
-          </button>
+  type="button"
+  onClick={handleResetPassword}
+  className="text-indigo-600 font-semibold py-3 mt-4 rounded-lg shadow-lg border-2 border-indigo-600 transition-transform duration-300 transform hover:bg-indigo-600 hover:text-white hover:shadow-xl hover:scale-105"
+>
+  Forgot Password?
+</button>
+
+
         </form>
       </div>
     </div>
