@@ -192,19 +192,26 @@ const Dashboard = () => {
         </button>
       </div>
 
+      <div className="relative min-h-screen bg-gradient-to-br from-blue-200 to-green-200">
+      {/* Chatbot Logo and Toggle */}
       <div className="fixed bottom-4 right-4">
         <img
-          src="https://media.istockphoto.com/id/1492548051/vector/chatbot-logo-icon.jpg?s=612x612&w=0&k=20&c=oh9mrvB70HTRt0FkZqOu9uIiiJFH9FaQWW3p4M6iNno=" // Replace with your logo path
+          src="https://media.istockphoto.com/id/1492548051/vector/chatbot-logo-icon.jpg?s=612x612&w=0&k=20&c=oh9mrvB70HTRt0FkZqOu9uIiiJFH9FaQWW3p4M6iNno="
           alt="Chatbot Logo"
           className="cursor-pointer w-16 h-16"
           onClick={toggleChatbot}
         />
-      </div>
 
-      {/* Chatbot Component */}
-      {chatbotOpen && <Chatbot onClose={toggleChatbot} />}
+        {/* Chatbot Component */}
+        {chatbotOpen && (
+          <div className="absolute bottom-20 right-0 w-64 bg-white shadow-lg rounded-lg p-4">
+            <Chatbot onClose={toggleChatbot} />
+          </div>
+        )}
+      </div>
     </div>
+  </div>
   );
-};
+}
 
 export default Dashboard;

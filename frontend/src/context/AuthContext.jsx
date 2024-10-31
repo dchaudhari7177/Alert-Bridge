@@ -9,6 +9,11 @@ import {
   sendEmailVerification,
   sendPasswordResetEmail
 } from 'firebase/auth';
+import {
+  getDatabase,
+  ref,
+  set
+} from 'firebase/database';
 import firebaseApp from '../firebaseConfig';
 
 const AuthContext = createContext();
@@ -18,6 +23,7 @@ export const AuthProvider = ({ children }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [userName, setUserName] = useState(null);
   const auth = getAuth(firebaseApp);
+  const database = getDatabase(firebaseApp); // Initialize Realtime Database
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -56,11 +62,16 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Save user data in Realtime Database
+      await set(ref(database, 'users/' + user.uid), {
+        username: name,
+        email: email,
+        uid: user.uid
+      });
+
       await updateProfile(user, { displayName: name });
       setUserName(name);
-
       await sendVerificationEmail(user);
-
       await signOut(auth); 
     } catch (error) {
       console.error('Signup Error:', error.message);

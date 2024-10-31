@@ -3,8 +3,9 @@ import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import axios from 'axios';
+import jsPDF from 'jspdf'; // Import jsPDF
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-control-geocoder/dist/Control.Geocoder.css'; 
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 
 const socket = io('http://localhost:5000');
 
@@ -18,7 +19,6 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     socket.on('reportUnsafe', (data) => {
-      console.log('Unsafe report received:', data);
       setUnsafeReports((prevReports) => [...prevReports, data]);
       fetchWeatherData(data.latitude, data.longitude);
 
@@ -101,11 +101,35 @@ const AdminDashboard = () => {
     navigate('/');
   };
 
+  // Function to generate PDF with users' data
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text('Unsafe Reports', 20, 20);
+    
+    unsafeReports.forEach((report, index) => {
+      doc.text(`Report ${index + 1}:`, 20, 30 + index * 10);
+      doc.text(`Latitude: ${report.latitude}`, 20, 35 + index * 10);
+      doc.text(`Longitude: ${report.longitude}`, 20, 40 + index * 10);
+      doc.text(`Message: ${report.text || 'No message provided'}`, 20, 45 + index * 10);
+    });
+
+    doc.save('unsafe_reports.pdf');
+  };
+
   return (
-    <div className="flex flex-col h-screen p-6 bg-gradient-to-br from-blue-100 to-green-100">
+    <div className="flex flex-col min-h-screen p-6 bg-gradient-to-br from-blue-100 to-green-100 overflow-auto">
       <div className="mb-4 text-center">
         <h1 className="text-4xl font-bold text-blue-700 mb-2">Admin Dashboard</h1>
         <p className="text-lg text-gray-600">Manage users, view analytics, and monitor reports here.</p>
+        
+        {/* Button to generate PDF */}
+        <button
+          onClick={generatePDF}
+          className="absolute top-6 right-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        >
+          Download PDF
+        </button>
       </div>
 
       {weatherData && (
@@ -148,7 +172,7 @@ const AdminDashboard = () => {
         <p className="text-gray-600">No unsafe reports yet.</p>
       )}
 
-      <div id="map" className="h-96 mb-4 rounded-lg shadow-md"></div>
+      <div id="map" className="h-96 mb-4 rounded-lg shadow-md" style={{ height: '500px', maxHeight: '500px' }}></div>
 
       <button
         onClick={handleLogout}
