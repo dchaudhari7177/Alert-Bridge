@@ -6,8 +6,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
 const regressionModel = require('./regressionModel'); 
-const mongoose = require('mongoose'); // Add mongoose to connect to MongoDB
-const User = require('./models/User'); // Adjust path as needed for your User model
+const mongoose = require('mongoose'); 
 
 dotenv.config();
 
@@ -24,8 +23,7 @@ admin.initializeApp({
   credential: admin.credential.cert(require(process.env.FIREBASE_CONFIG_PATH)),
 });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, { // Ensure you have your MongoDB URI in .env
+mongoose.connect(process.env.MONGODB_URI, { 
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -40,10 +38,9 @@ app.get('/', (req, res) => {
   res.send('Backend is running');
 });
 
-// New endpoint to fetch users
 app.get('/api/users', async (req, res) => {
   try {
-    const users = await User.find(); // Fetch all users from the User collection
+    const users = await User.find(); 
     res.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);

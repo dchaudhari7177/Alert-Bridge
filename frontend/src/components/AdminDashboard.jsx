@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import axios from 'axios';
-import jsPDF from 'jspdf'; // Import jsPDF
+import jsPDF from 'jspdf'; 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 
@@ -101,7 +101,6 @@ const AdminDashboard = () => {
     navigate('/');
   };
 
-  // Function to generate PDF with users' data
   const generatePDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
