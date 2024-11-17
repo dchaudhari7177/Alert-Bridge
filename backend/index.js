@@ -2,12 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const admin = require('firebase-admin');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const userRoutes = require('./users');
+const regressionModel = require('./regressionModel');
 const http = require('http');
 const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
-const regressionModel = require('./regressionModel');
-const mongoose = require('mongoose');
-const userRoutes = require('./users');
 
 dotenv.config();
 
@@ -15,16 +15,18 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*", // Accepts all origins, modify as necessary
     methods: ["GET", "POST"],
   },
 });
 
+// Firebase Admin Initialization
 admin.initializeApp({
   credential: admin.credential.cert(require(process.env.FIREBASE_CONFIG_PATH)),
 });
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/alert_bridge';
+// MongoDB connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://dipakchaudhari171:Dipak%404646@cluster.78kru4h.mongodb.net/alert_bridge?retryWrites=true&w=majority';
 
 (async () => {
   try {
@@ -40,15 +42,18 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/alert_
   }
 })();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use('/api', userRoutes); 
 
+// Basic test route
 app.get('/', (req, res) => {
   res.send('Backend is running');
 });
 
+// Socket.io - For real-time communication
 io.on('connection', (socket) => {
   console.log('A user connected: ', socket.id);
 
@@ -62,6 +67,7 @@ io.on('connection', (socket) => {
   });
 });
 
+// Evaluate risks endpoint
 app.post('/evaluate-risks', (req, res) => {
   const { temperature, humidity, windSpeed } = req.body;
   const earthquakeRisk = regressionModel.evaluateEarthquakeRisk(temperature, humidity, windSpeed);
@@ -70,7 +76,8 @@ app.post('/evaluate-risks', (req, res) => {
   res.json({ earthquakeRisk, floodRisk });
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export as serverless function
+module.exports = (req, res) => {
+  // This will allow Vercel to handle the function
+  require('serverless-http')(app)(req, res);
+};

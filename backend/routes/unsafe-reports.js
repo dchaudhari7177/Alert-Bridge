@@ -7,7 +7,7 @@ const reportRoutes = require('./routes/reports');
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/reports', reportRoutes); // Add your reports route here
+app.use('/api/reports', reportRoutes); 
 
 mongoose.connect('mongodb://localhost:27017/alertbridge', {
   useNewUrlParser: true,

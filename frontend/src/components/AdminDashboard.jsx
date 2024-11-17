@@ -18,7 +18,6 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const apiKey = '3e3e546e38846f06bc1e74ea591cc753';
 
-  // Fetch unsafe reports and weather data
   useEffect(() => {
     socket.on('reportUnsafe', (data) => {
       setUnsafeReports((prevReports) => [...prevReports, data]);
@@ -44,7 +43,6 @@ const AdminDashboard = () => {
     };
   }, [map]);
 
-  // Initialize the map
   useEffect(() => {
     const mapInstance = L.map('map').setView(currentLocation, 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -52,7 +50,6 @@ const AdminDashboard = () => {
     }).addTo(mapInstance);
     setMap(mapInstance);
 
-    // Get the current location of the admin
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
@@ -67,7 +64,6 @@ const AdminDashboard = () => {
     };
   }, []);
 
-  // Fetch weather data based on the given latitude and longitude
   const fetchWeatherData = async (latitude, longitude) => {
     try {
       const response = await axios.get(
@@ -84,7 +80,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Handle clicking on service buttons (e.g., send police, medical services)
   const handleServiceClick = (serviceType) => {
     if (unsafeReports.length === 0) {
       alert('No unsafe reports available.');
@@ -102,18 +97,16 @@ const AdminDashboard = () => {
     alert(`${serviceType} service sent to (${latestReport.latitude}, ${latestReport.longitude})`);
   };
 
-  // Handle logout
   const handleLogout = () => {
     socket.emit('logout');
     navigate('/');
   };
 
-  // Fetch users from the backend
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/api/users');
-        console.log(response.data); // Debugging: Check if users are fetched
+        console.log(response.data); 
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -122,9 +115,7 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
-  // Generate PDF for users
   
-  // Generate PDF for unsafe reports
   const generatePDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
