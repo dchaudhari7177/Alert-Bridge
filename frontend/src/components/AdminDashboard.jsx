@@ -14,9 +14,11 @@ const AdminDashboard = () => {
   const [map, setMap] = useState(null);
   const [currentLocation, setCurrentLocation] = useState([51.505, -0.09]);
   const [weatherData, setWeatherData] = useState(null);
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const apiKey = '3e3e546e38846f06bc1e74ea591cc753';
 
+  // Fetch unsafe reports and weather data
   useEffect(() => {
     socket.on('reportUnsafe', (data) => {
       setUnsafeReports((prevReports) => [...prevReports, data]);
@@ -42,6 +44,7 @@ const AdminDashboard = () => {
     };
   }, [map]);
 
+  // Initialize the map
   useEffect(() => {
     const mapInstance = L.map('map').setView(currentLocation, 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -49,6 +52,7 @@ const AdminDashboard = () => {
     }).addTo(mapInstance);
     setMap(mapInstance);
 
+    // Get the current location of the admin
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
@@ -63,6 +67,7 @@ const AdminDashboard = () => {
     };
   }, []);
 
+  // Fetch weather data based on the given latitude and longitude
   const fetchWeatherData = async (latitude, longitude) => {
     try {
       const response = await axios.get(
@@ -79,6 +84,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // Handle clicking on service buttons (e.g., send police, medical services)
   const handleServiceClick = (serviceType) => {
     if (unsafeReports.length === 0) {
       alert('No unsafe reports available.');
@@ -96,21 +102,51 @@ const AdminDashboard = () => {
     alert(`${serviceType} service sent to (${latestReport.latitude}, ${latestReport.longitude})`);
   };
 
+  // Handle logout
   const handleLogout = () => {
     socket.emit('logout');
     navigate('/');
   };
 
+  // Fetch users from the backend
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('/api/users');
+        console.log(response.data); // Debugging: Check if users are fetched
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // Generate PDF for users
+  
+  // Generate PDF for unsafe reports
   const generatePDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text('Unsafe Reports', 20, 20);
-    
+
+    if (unsafeReports.length === 0) {
+      doc.text('No reports available', 20, 30);
+      doc.save('unsafe_reports.pdf');
+      return;
+    }
+
     unsafeReports.forEach((report, index) => {
-      doc.text(`Report ${index + 1}:`, 20, 30 + index * 10);
-      doc.text(`Latitude: ${report.latitude}`, 20, 35 + index * 10);
-      doc.text(`Longitude: ${report.longitude}`, 20, 40 + index * 10);
-      doc.text(`Message: ${report.text || 'No message provided'}`, 20, 45 + index * 10);
+      const yPosition = 30 + index * 40;
+
+      doc.text(`Report ${index + 1}:`, 20, yPosition);
+      doc.text(`Latitude: ${report.latitude}`, 20, yPosition + 5);
+      doc.text(`Longitude: ${report.longitude}`, 20, yPosition + 10);
+      doc.text(`Message: ${report.text || 'No message provided'}`, 20, yPosition + 15);
+
+      if (yPosition > 250) {
+        doc.addPage();
+      }
     });
 
     doc.save('unsafe_reports.pdf');
@@ -121,8 +157,7 @@ const AdminDashboard = () => {
       <div className="mb-4 text-center">
         <h1 className="text-4xl font-bold text-blue-700 mb-2">Admin Dashboard</h1>
         <p className="text-lg text-gray-600">Manage users, view analytics, and monitor reports here.</p>
-        
-        {/* Button to generate PDF */}
+       
         <button
           onClick={generatePDF}
           className="absolute top-6 right-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
@@ -168,17 +203,31 @@ const AdminDashboard = () => {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-600">No unsafe reports yet.</p>
+        <p className="text-gray-600">No unsafe reports available.</p>
       )}
 
-      <div id="map" className="h-96 mb-4 rounded-lg shadow-md" style={{ height: '500px', maxHeight: '500px' }}></div>
+      <div className="mb-6 space-y-4">
+        <button
+          onClick={() => handleServiceClick('Police')}
+          className="px-6 py-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+        >
+          Send Police
+        </button>
+        <button
+          onClick={() => handleServiceClick('Medical')}
+          className="px-6 py-3 bg-yellow-600 text-white rounded-full hover:bg-yellow-700 transition-colors"
+        >
+          Send Medical Services
+        </button>
+        <button
+          onClick={handleLogout}
+          className="px-6 py-3 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition-colors"
+        >
+          Logout
+        </button>
+      </div>
 
-      <button
-        onClick={handleLogout}
-        className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors"
-      >
-        Logout
-      </button>
+      <div id="map" className="w-full h-96"></div>
     </div>
   );
 };

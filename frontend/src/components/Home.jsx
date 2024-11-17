@@ -146,7 +146,7 @@ const Home = () => {
 </div>
 
 <div className="bg-white shadow-lg rounded-lg p-4 transition-transform duration-300 transform hover:scale-105 animate-fadeIn">
-  <img src="/path/to/founder2.jpg" alt="Founder 2" className="rounded-full w-24 h-24 mx-auto mb-4" />
+  <img src="#" alt="Founder 2" className="rounded-full w-24 h-24 mx-auto mb-4" />
   <h3 className="text-xl font-bold text-center">Tejas Nagmote</h3>
   <p className="text-gray-700 text-center mb-4">Brief information about Founder 2, including their role and contributions.</p>
   <div className="flex justify-center gap-4">
@@ -163,7 +163,7 @@ const Home = () => {
 </div>
 
 <div className="bg-white shadow-lg rounded-lg p-4 transition-transform duration-300 transform hover:scale-105 animate-fadeIn">
-  <img src="/path/to/founder3.jpg" alt="Founder 3" className="rounded-full w-24 h-24 mx-auto mb-4" />
+  <img src="./vaibhav.jpg" alt="Founder 3" className="rounded-full w-24 h-24 mx-auto mb-4" />
   <h3 className="text-xl font-bold text-center">Vaibhav Srivastava</h3>
   <p className="text-gray-700 text-center mb-4">Brief information about Founder 3, including their role and contributions.</p>
   <div className="flex justify-center gap-4">

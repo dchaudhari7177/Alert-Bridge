@@ -61,24 +61,31 @@ export const AuthProvider = ({ children }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // Save user data in Realtime Database
-      await set(ref(database, 'users/' + user.uid), {
-        username: name,
-        email: email,
-        uid: user.uid
+  
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: name,
+          email: email,
+          uid: user.uid,
+        }),
       });
-
+  
+      if (!response.ok) {
+        throw new Error('Failed to save user data to MongoDB');
+      }
+  
       await updateProfile(user, { displayName: name });
       setUserName(name);
       await sendVerificationEmail(user);
-      await signOut(auth); 
+      await signOut(auth);
     } catch (error) {
       console.error('Signup Error:', error.message);
       throw error;
     }
   };
-
+  
   const sendVerificationEmail = async (user) => {
     try {
       await sendEmailVerification(user);
