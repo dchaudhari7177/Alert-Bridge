@@ -160,13 +160,14 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row justify-center items-start p-6 bg-gradient-to-br from-blue-200 to-green-200 min-h-screen">
-      <div className="bg-white shadow-lg rounded-lg p-6 m-4 flex-1 transition-transform transform hover:scale-105 duration-300 border-l-4 border-blue-600">
+      
+      <div className="bg-white shadow-lg rounded-lg p-6 m-4 flex-1 transition-transform transform hover:scale-105 duration-300 border-l-4 border-blue-600 flex flex-col justify-between space-y-6">
         <h2 className="text-3xl font-bold mb-4 text-center text-blue-800">Weather Information</h2>
         {weatherData && (
-          <div className="text-center mb-4">
-            <p className="text-lg text-blue-700"><strong>Temperature:</strong> {weatherData.main.temp}°C</p>
-            <p className="text-lg text-blue-700"><strong>Humidity:</strong> {weatherData.main.humidity}%</p>
-            <p className="text-lg text-blue-700"><strong>Wind Speed:</strong> {weatherData.wind.speed} m/s</p>
+          <div className="text-center text-blue-700 space-y-2">
+            <p className="text-lg"><strong>Temperature:</strong> {weatherData.main.temp}°C</p>
+            <p className="text-lg"><strong>Humidity:</strong> {weatherData.main.humidity}%</p>
+            <p className="text-lg"><strong>Wind Speed:</strong> {weatherData.wind.speed} m/s</p>
           </div>
         )}
         <h2 className="text-2xl font-bold mb-2 text-blue-800">Earthquake Risk</h2>
@@ -175,17 +176,17 @@ const Dashboard = () => {
         <p className="text-lg text-center text-green-600">{precautions}</p>
       </div>
 
-      <div className="bg-white shadow-lg rounded-lg p-6 m-4 flex-1 transition-transform transform hover:scale-105 duration-300 border-l-4 border-green-600">
+      <div className="bg-white shadow-lg rounded-lg p-6 m-4 flex-1 transition-transform transform hover:scale-105 duration-300 border-l-4 border-green-600 flex flex-col justify-between space-y-6">
         <h2 className="text-2xl font-bold mb-2 text-blue-800">Unsafe Status</h2>
         <input
           type="text"
           value={unsafeText}
           onChange={(e) => setUnsafeText(e.target.value)}
           placeholder="Type your concern..."
-          className="border border-gray-300 rounded-lg p-2 w-full mb-4"
+          className="border border-gray-300 rounded-lg p-2 w-full mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-300"
         />
         <button
-          className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300"
+          className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 transition duration-300"
           onClick={handleUnsafeClick}
         >
           I am unsafe
@@ -193,25 +194,25 @@ const Dashboard = () => {
       </div>
 
       <div className="relative min-h-screen bg-gradient-to-br from-blue-200 to-green-200">
-      {/* Chatbot Logo and Toggle */}
-      <div className="fixed bottom-4 right-4">
-        <img
-          src="https://media.istockphoto.com/id/1492548051/vector/chatbot-logo-icon.jpg?s=612x612&w=0&k=20&c=oh9mrvB70HTRt0FkZqOu9uIiiJFH9FaQWW3p4M6iNno="
-          alt="Chatbot Logo"
-          className="cursor-pointer w-16 h-16"
-          onClick={toggleChatbot}
-        />
-
-        {/* Chatbot Component */}
-        {chatbotOpen && (
+        <div className="fixed bottom-4 right-4 flex items-center space-x-2">
+          <img
+            src="https://media.istockphoto.com/id/1492548051/vector/chatbot-logo-icon.jpg?s=612x612&w=0&k=20&c=oh9mrvB70HTRt0FkZqOu9uIiiJFH9FaQWW3p4M6iNno="
+            alt="Chatbot Logo"
+            className="cursor-pointer w-16 h-16 rounded-full transition-transform duration-300 hover:scale-110"
+            onClick={toggleChatbot}
+          />
+          
+          {chatbotOpen && (
           <div className="absolute bottom-20 right-0 w-64 bg-white shadow-lg rounded-lg p-4">
             <Chatbot onClose={toggleChatbot} />
           </div>
-        )}
+          )}
+        </div>
       </div>
+
     </div>
-  </div>
   );
-}
+};
+
 
 export default Dashboard;

@@ -11,6 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 import News from './components/News';
 import About from './components/About';
 import Quotes from './components/Quotes';
+import ContactUs from './components/ContactUs';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/news" element={<News />} />
           <Route path="/important-contact" element={<ImportantContacts />} /> 
           <Route path="/about" element={<About />} />
+          <Route path="/contact-us" element={<ContactUs />} />
         </Routes>
       </Router>
     </AuthProvider>

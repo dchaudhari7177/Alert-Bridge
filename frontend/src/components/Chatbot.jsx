@@ -78,54 +78,58 @@ const Chatbot = ({ precautions }) => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 w-full max-w-xs bg-white rounded-lg shadow-lg overflow-hidden animate-fadeInUp transition-all duration-300">
-      <div className="bg-blue-500 text-white text-center p-3 font-semibold text-lg">
-        Chatbot
+    <div className="fixed bottom-4 right-4 w-full max-w-xs bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center p-3 font-semibold text-lg rounded-t-lg">
+        <span>Chatbot</span>
       </div>
-      <div className="p-3 max-h-60 overflow-y-auto space-y-2">
+      <div className="p-4 max-h-64 overflow-y-auto space-y-4 bg-gray-50 shadow-inner rounded-b-lg">
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`p-2 rounded-md text-sm ${msg.isUser ? 'bg-blue-100 text-right animate-slideInRight' : 'bg-gray-100 text-left animate-slideInLeft'}`}
+            className={`p-2 rounded-md text-sm ${
+              msg.isUser ? 'bg-blue-100 text-right animate-slideInRight' : 'bg-gray-200 text-left animate-slideInLeft'
+            }`}
           >
             {msg.text}
           </div>
         ))}
       </div>
-      <div className="flex p-3 space-x-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
-          className="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        />
-        <button
-          onClick={handleSend}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 transition-all duration-150 animate-bounce"
-        >
-          Send
-        </button>
-      </div>
-      <div className="p-3 grid grid-cols-3 gap-2">
-        <button
-          onClick={() => handleButtonClick('weather')}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg p-2 text-sm font-medium animate-pulse transition-transform transform hover:scale-105"
-        >
-          Current Weather
-        </button>
-        <button
-          onClick={() => handleButtonClick('precautions')}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg p-2 text-sm font-medium animate-pulse transition-transform transform hover:scale-105"
-        >
-          Precautions
-        </button>
-        <button
-          onClick={() => handleButtonClick('description')}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg p-2 text-sm font-medium animate-pulse transition-transform transform hover:scale-105"
-        >
-          Description
-        </button>
+      <div className="p-3 bg-white border-t-2 border-gray-200">
+        <div className="flex space-x-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type a message..."
+            className="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+          />
+          <button
+            onClick={handleSend}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:bg-gradient-to-l text-white rounded-lg px-4 py-2 transition-all duration-200 transform hover:scale-105"
+          >
+            Send
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-2 mt-4">
+          <button
+            onClick={() => handleButtonClick('weather')}
+            className="bg-gradient-to-r from-blue-500 to-teal-500 hover:bg-gradient-to-l text-white rounded-lg p-2 text-sm font-medium transform transition-transform hover:scale-105"
+          >
+            Weather
+          </button>
+          <button
+            onClick={() => handleButtonClick('precautions')}
+            className="bg-gradient-to-r from-blue-500 to-teal-500 hover:bg-gradient-to-l text-white rounded-lg p-2 text-sm font-medium transform transition-transform hover:scale-105"
+          >
+            Precautions
+          </button>
+          <button
+            onClick={() => handleButtonClick('description')}
+            className="bg-gradient-to-r from-blue-500 to-teal-500 hover:bg-gradient-to-l text-white rounded-lg p-2 text-sm font-medium transform transition-transform hover:scale-105"
+          >
+            Description
+          </button>
+        </div>
       </div>
     </div>
   );

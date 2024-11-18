@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const regressionModel = require('./regressionModel');
 const mongoose = require('mongoose');
 const userRoutes = require('./users');
+const contactRoutes = require('./routes/contact'); 
 
 dotenv.config();
 
@@ -31,19 +32,20 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://dipakchaudhari171:
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      dbName: process.env.MONGODB_DBNAME || 'alert_bridge', 
+      dbName: process.env.MONGODB_DBNAME || 'alert_bridge',
     });
     console.log('MongoDB connected successfully');
   } catch (err) {
     console.error('Error connecting to MongoDB:', err);
-    process.exit(1); 
+    process.exit(1);
   }
 })();
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-app.use('/api', userRoutes); 
+app.use('/api', userRoutes);
+app.use('/api', contactRoutes); 
 
 app.get('/', (req, res) => {
   res.send('Backend is running');
