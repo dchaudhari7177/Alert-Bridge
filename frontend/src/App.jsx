@@ -9,6 +9,7 @@ import AdminDashboard from './components/AdminDashboard';
 import ImportantContacts from './components/ImportantContact';
 import { AuthProvider } from './context/AuthContext';
 import News from './components/News';
+import About from './components/About';
 import Quotes from './components/Quotes';
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/quotes" element={<Quotes />} />
           <Route path="/news" element={<News />} />
           <Route path="/important-contact" element={<ImportantContacts />} /> 
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </AuthProvider>

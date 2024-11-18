@@ -47,6 +47,9 @@ const Home = () => {
   const handleNewsRedirect = () => {
     navigate('/news');
   };
+   const handleAboutRedirect = () => {
+    navigate('/about');
+  };
 
   return (
     <div className="home-container flex flex-col min-h-screen bg-gradient-to-b from-blue-500 to-teal-400 relative overflow-hidden">
@@ -63,6 +66,8 @@ const Home = () => {
               </button>
               <button onClick={handleImportantContact} className="bg-[#28A745] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">Important Contact</button>
               <button onClick={handleNewsRedirect} className="bg-[#F39C12] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">News</button>
+              <button onClick={handleAboutRedirect} className="bg-[#F32A77] px-4 py-2 rounded shadow-md transition-transform duration-300 transform hover:scale-105">About us</button>
+
             </>
           ) : (
             <div className="flex gap-2">
@@ -75,7 +80,6 @@ const Home = () => {
       </header>
 
       <main className="flex-grow flex flex-col items-center justify-center p-4 pt-20">
-        {/* Content */}
         <section className="bg-white shadow-lg rounded-lg p-8 w-full md:w-3/4 lg:w-2/3 mb-8 animate-fadeIn transition-transform duration-300 hover:scale-105">
           <h2 className="text-3xl text-[#0077B6] font-extrabold mb-6 border-b-2 border-[#0077B6] pb-2">
             About Our Website
@@ -120,65 +124,7 @@ const Home = () => {
   </div>
 ))}
 </section>
-<h2 className="text-4xl font-bold text-center text-gray-800 my-8 relative">
-<span className="relative inline-block">
-<span className="relative text-gray-800">Meet Our Founders</span>
-</span>
-<span className="block h-1 w-32 bg-blue-500 rounded mt-4 mx-auto"></span>
-<h3 className="text-2xl font-semibold text-gray-600 mt-2">Team Vortex Knights</h3>
-</h2>
-<section className="w-full md:w-3/4 lg:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 mb-4">
-<div className="bg-white shadow-lg rounded-lg p-4 transition-transform duration-300 transform hover:scale-105 animate-fadeIn">
-  <img src="./dipak--.jpg" alt="Founder 1" className="rounded-full w-24 h-24 mx-auto mb-4" />
-  <h3 className="text-xl font-bold text-center">Dipak Chaudhari</h3>
-  <p className="text-gray-700 text-center mb-4">I'm an adventurous tech enthusiast with a focus on web development and the exciting world of AI. Let's connect and dive into the possibilities!</p>
-  <div className="flex justify-center gap-4">
-    <a href="https://linktr.ee/dipakchaudhari171" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaLinkedin className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-    <a href="https://github.com/dchaudhari7177" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaGithub className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-    <a href="https://www.instagram.com/dipakchaudhari777/" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaInstagram className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-  </div>
-</div>
 
-<div className="bg-white shadow-lg rounded-lg p-4 transition-transform duration-300 transform hover:scale-105 animate-fadeIn">
-  <img src="#" alt="Founder 2" className="rounded-full w-24 h-24 mx-auto mb-4" />
-  <h3 className="text-xl font-bold text-center">Tejas Nagmote</h3>
-  <p className="text-gray-700 text-center mb-4">Brief information about Founder 2, including their role and contributions.</p>
-  <div className="flex justify-center gap-4">
-    <a href="https://www.linkedin.com/in/founder2" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaLinkedin className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-    <a href="https://github.com/founder2" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaGithub className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-    <a href="https://instagram.com/founder2" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaInstagram className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-  </div>
-</div>
-
-<div className="bg-white shadow-lg rounded-lg p-4 transition-transform duration-300 transform hover:scale-105 animate-fadeIn">
-  <img src="./vaibhav.jpg" alt="Founder 3" className="rounded-full w-24 h-24 mx-auto mb-4" />
-  <h3 className="text-xl font-bold text-center">Vaibhav Srivastava</h3>
-  <p className="text-gray-700 text-center mb-4">Brief information about Founder 3, including their role and contributions.</p>
-  <div className="flex justify-center gap-4">
-    <a href="https://www.linkedin.com/in/founder3" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaLinkedin className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-    <a href="https://github.com/founder3" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaGithub className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-    <a href="https://instagram.com/founder3" target="_blank" rel="noopener noreferrer" className="text-[#0077B6] hover:text-[#005f8f]">
-      <FaInstagram className="w-6 h-6 transition-transform duration-300 transform hover:scale-125" />
-    </a>
-  </div>
-</div>
-</section>
 </main>
 <footer className="bg-[#0077B6] text-white p-4 text-center">
 <p>© {new Date().getFullYear()} Vortex Knights. All rights reserved.</p>
