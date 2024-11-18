@@ -65,7 +65,7 @@ const About = () => {
               Dipak Chaudhari
             </h3>
             <p className="text-gray-300">
-              CEO & Co-Founder. I'm an adventurous tech enthusiast with a focus
+              I'm an adventurous tech enthusiast with a focus
               on web development and the exciting world of AI. Let's connect and
               dive into the possibilities!
             </p>
@@ -80,7 +80,7 @@ const About = () => {
               Tejas Nagmote
             </h3>
             <p className="text-gray-300">
-              Investor & Co-Founder. Natural leader, skilled speaker, and
+              Natural leader, skilled speaker, and
               fitness enthusiast. Motivated to inspire and drive success, both
               in the gym and in every project he takes on!
             </p>
@@ -95,7 +95,7 @@ const About = () => {
               Vaibhav Srivastava
             </h3>
             <p className="text-gray-300">
-              President & Co-Founder. Curious student exploring new
+              Curious student exploring new
               technologies, passionate about web development and AI, always
               eager to learn and grow!
             </p>

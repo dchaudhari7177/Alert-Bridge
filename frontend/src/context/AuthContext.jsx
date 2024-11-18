@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [userName, setUserName] = useState(null);
   const auth = getAuth(firebaseApp);
-  const database = getDatabase(firebaseApp); // Initialize Realtime Database
+  const database = getDatabase(firebaseApp); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

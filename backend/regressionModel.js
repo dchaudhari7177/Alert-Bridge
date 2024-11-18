@@ -1,6 +1,3 @@
-// regressionModel.js
-
-// Sample training data (temperature, humidity, wind speed) => risk level
 const earthquakeTrainingData = [
     { x: [0, 80, 15], y: 1 },
     { x: [30, 40, 5], y: 2 },
