@@ -94,7 +94,7 @@ Feel free to fork and submit pull requests! Any feedback or suggestions are welc
 
 **Dipak Chaudhari**
 🚀 BTech CSE | Web Dev Enthusiast
-📫 Email: [dipak@example.com](mailto:dipakchaudhari171@gmail.com)
+📫 Email: [dipakchaudhari171@gmail.com](mailto:dipakchaudhari171@gmail.com)
 🌐 [LinkedIn](https://linkedin.com/in/dipak-chaudhari-813669248/) | [GitHub](https://github.com/dchaudhari7177)
 
 
